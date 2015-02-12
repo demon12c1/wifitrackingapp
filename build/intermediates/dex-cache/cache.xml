@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/tri/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-0f3206d1c4d92662e95d22c3075adc47f2153774.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-1f5e3e3c8a6effaa31ffcd6e0995ca8466a2ea96.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-3fe459da6020e3abbcaf9e66de9e36f5a1818af6.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-da758517a9f2219fe1c570ca9e2e8a13f470bc8b.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.androidmapsextensions/android-maps-extensions/2.2.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0a79308f67e2659591969ceca2979a673d2c3536">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-08f290e524404b2420bd00a0fcbfb882fb8909f5.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-a9b69e70d6e6cbfa4dc591b2473cce0704665ff2.jar" />
+    </item>
+
+</items>
