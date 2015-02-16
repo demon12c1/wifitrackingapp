@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.tj.tri.trafficjamtrack.config.AppConfig;
+import com.tj.tri.trafficjamtrack.datahelper.AsyncResponse;
 import com.tj.tri.trafficjamtrack.datahelper.Helper;
 import com.tj.tri.trafficjamtrack.requestactivity.utils.RequestUtils;
 
@@ -25,7 +26,6 @@ import java.util.List;
  * Created by tri on 2/10/15.
  */
 public class DataPostAsyncTask extends AsyncTask<HashMap<String, String>, Void, String> {
-
     @Override
     protected String doInBackground(HashMap<String, String>... params) {
         return RequestUtils.PostDataToCreateWifi(params[0]);
@@ -34,6 +34,8 @@ public class DataPostAsyncTask extends AsyncTask<HashMap<String, String>, Void, 
     @Override
     protected void onPostExecute(String result) {
         Log.d(AppConfig.DEBUG_TAG,"result when create wifi: " + result);
+        super.onPostExecute(result);
+
     }
 
 

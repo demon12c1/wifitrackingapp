@@ -16,6 +16,13 @@
         <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-1f5e3e3c8a6effaa31ffcd6e0995ca8466a2ea96.jar" />
     </item>
     <item
+        jar="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/pre-dexed/debug/classes-86c31dedd061ee71a489e08ca3ca5ed5b1f82a0b.jar" />
+    </item>
+    <item
         jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
         jumboMode="false"
         revision="21.1.2"
@@ -23,11 +30,39 @@
         <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/classes-3fe459da6020e3abbcaf9e66de9e36f5a1818af6.jar" />
     </item>
     <item
+        jar="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/pre-dexed/debug/classes-a5c98b0a66a0ccb7d2d9750ade077f93f84189ed.jar" />
+    </item>
+    <item
         jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
         <dex dex="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-da758517a9f2219fe1c570ca9e2e8a13f470bc8b.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/pre-dexed/debug/classes-3ab425f42f807aeda4588bb741ca0380cc4da6e5.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-e59aa2c07af93b934422a5134662731e327e7a85.jar" />
+    </item>
+    <item
+        jar="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/exploded-aar/com.androidmapsextensions/android-maps-extensions/2.2.0/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="0a79308f67e2659591969ceca2979a673d2c3536">
+        <dex dex="/home/tri/AndroidStudioProjects/WifiTrackingAndroidApp/app/build/intermediates/pre-dexed/debug/classes-4c9948ab0f524024460765a10949284e14db09cb.jar" />
     </item>
     <item
         jar="/home/tri/AndroidStudioProjects/TrafficJamTrack/app/build/intermediates/exploded-aar/com.androidmapsextensions/android-maps-extensions/2.2.0/classes.jar"

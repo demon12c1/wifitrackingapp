@@ -33,6 +33,7 @@ import com.androidmapsextensions.Marker;
 import com.androidmapsextensions.MarkerOptions;
 import com.tj.tri.trafficjamtrack.config.AppConfig;
 import com.tj.tri.trafficjamtrack.customlayout.CustomWindowAdapter;
+import com.tj.tri.trafficjamtrack.datahelper.AsyncResponse;
 import com.tj.tri.trafficjamtrack.datahelper.Helper;
 import com.tj.tri.trafficjamtrack.requestactivity.DataPostAsyncTask;
 
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener, LocationListener {
     private GoogleMap mMap;
@@ -101,7 +103,8 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
 
     }
 
-     // Display the alert that adds the marker
+
+    // Display the alert that adds the marker
     private void showAlertDialogForPoint(final LatLng point) {
         // inflate message_item.xml view
         View messageView = LayoutInflater.from(MainActivity.this).
@@ -119,6 +122,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        boolean ipChecked = false;
                         // Define color of marker icon
                         BitmapDescriptor defaultMarker =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
@@ -140,15 +144,44 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                             wifiInfo.put("wifiName", wifiName);
                             wifiInfo.put("wifiPassword", wifiPassword);
                             wifiInfo.put("description", description);
-                                dataPostAsyncTask.execute((HashMap)wifiInfo);
+                            try {
+                                String output = dataPostAsyncTask.execute((HashMap) wifiInfo).get();
+                                ipChecked = checkingWifiAlreadySet(output);
+                            }catch (InterruptedException | ExecutionException e){
+                                Log.e(AppConfig.DEBUG_TAG,"" + e);
+                            }
+
+                        }
+                        if(ipChecked){
+                            Marker marker = mMap.addMarker(new MarkerOptions()
+                                    .position(point)
+                                    .title(wifiName)
+                                    .snippet(wifiPassword)
+                                    .icon(defaultMarker));
+                            Toast.makeText(getApplicationContext(), "This wifi is shared by you, thanks for sharing!!!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "This wifi has already shared!!!", Toast.LENGTH_LONG).show();
 
                         }
 
-                        Marker marker = mMap.addMarker(new MarkerOptions()
-                                .position(point)
-                                .title(wifiName)
-                                .snippet(wifiPassword)
-                                .icon(defaultMarker));
+                    }
+
+                    private boolean checkingWifiAlreadySet(String jsonData){
+                        try {
+                            JSONObject jsonObject = new JSONObject(jsonData);
+                            String status = jsonObject.getString("result");
+
+                            if (status.equals(AppConfig.SUCCESS)){
+                                return true;
+                            }
+                            else{
+                                return false;
+                            }
+                        }catch (JSONException e){
+                            Log.e(AppConfig.DEBUG_TAG, "unexpected JSON exception", e);
+                            return false;
+                        }
+
                     }
                 });
 
@@ -272,6 +305,8 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         }
     }
 
+
+
     private void prepareDataToRender(String jsonData){
 
         try {
@@ -308,7 +343,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
     private boolean checkWifiIsSetAtSamePosition(){
         //todo: this need to be solved
         boolean check = true;
-        Circle circle = mMap.addCircle(new CircleOptions().center(this.mCurrentPosition).radius(5).strokeColor(Color.RED)
+        Circle circle = mMap.addCircle(new CircleOptions().center(this.mCurrentPosition).radius(0).strokeColor(Color.RED)
                 .fillColor(Color.BLUE));
         List<Marker> listMarker = mMap.getDisplayedMarkers();
         for (Marker marker : listMarker){

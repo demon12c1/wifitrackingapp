@@ -67,7 +67,7 @@ public class RequestUtils {
 
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("type", "all"));
+            nameValuePairs.add(new BasicNameValuePair("type", AppConfig.WIFI_GET_TYPE_ALL));
             nameValuePairs.add(new BasicNameValuePair("API_KEY", AppConfig.API_KEY));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             Log.d(AppConfig.DEBUG_TAG, "http data: " + httpPost.toString());
