@@ -8,8 +8,13 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +29,7 @@ import com.androidmapsextensions.GoogleMap;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.androidmapsextensions.MapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -45,9 +51,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener, LocationListener {
+public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMyLocationChangeListener {
     private GoogleMap mMap;
     private LatLng mCurrentPosition;
+    private LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,8 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         setContentView(R.layout.activity_main);
         //Init map info
         Log.d(AppConfig.DEBUG_TAG,"Set up map");
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 0, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
         setUpMap();
         setUpMapIfNeeded();
 
@@ -95,11 +104,11 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
     public void onMapLongClick(LatLng point) {
 
 //        // Get current location
-        if(checkWifiIsSetAtSamePosition()){
+//        if(checkWifiIsSetAtSamePosition()){
             LatLng latLng = this.mCurrentPosition;
             // Display the alert dialog and set up point if create successfully at current location
             showAlertDialogForPoint(latLng);
-        }
+//        }
 
     }
 
@@ -133,6 +142,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                                 getText().toString();
                         String description = ((EditText) alertDialog.findViewById(R.id.etDes)).
                                 getText().toString();
+                        String bssid = MainActivity.this.getCurrentSsid(MainActivity.this);
                         // Creates and adds marker to the map
 
 
@@ -144,6 +154,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                             wifiInfo.put("wifiName", wifiName);
                             wifiInfo.put("wifiPassword", wifiPassword);
                             wifiInfo.put("description", description);
+                            wifiInfo.put("bssid", bssid);
                             try {
                                 String output = dataPostAsyncTask.execute((HashMap) wifiInfo).get();
                                 ipChecked = checkingWifiAlreadySet(output);
@@ -165,6 +176,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                         }
 
                     }
+
 
                     private boolean checkingWifiAlreadySet(String jsonData){
                         try {
@@ -203,48 +215,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
 
     }
 
-//    private void setUpMapWithWifiInfo(){
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker").snippet("Snippet"));
-//        // Enable MyLocation Layer of Google Map
-//        mMap.setMyLocationEnabled(true);
-//
-//        // set map type
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        LatLng latLng = this.currentLocation();
-//        // Show the current location in Google Map
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//        // Zoom in the Google Map
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(14));
-//
-//    }
 
-//    private LatLng currentLocation(){
-//        LatLng latLng;
-//        // Get LocationManager object from System Service LOCATION_SERVICE
-//        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        // Create a criteria object to retrieve provider
-//        Criteria criteria = new Criteria();
-//        // Get the name of the best provider
-//        String provider = locationManager.getBestProvider(criteria, true);
-//
-//        // Get Current Location
-//        Location myLocation = mMap.getMyLocation();
-//        //Location myLocation = locationManager.getLastKnownLocation(provider);
-//        // Get latitude of the current location
-//        double latitude = myLocation.getLatitude();
-//        // Get longitude of the current location
-//        double longitude = myLocation.getLongitude();
-//        //Create a LatLng object for the current location
-//        if(this.mCurrentPosition == null){
-//            latLng = new LatLng(this.mCurrentPosition.latitude, this.mCurrentPosition.longitude);
-//        }else{
-//            latLng = new LatLng(latitude,longitude);
-//        }
-//
-//
-
-//        return latLng;
-//    }
 
     private void setUpLocationChange(){
         if (!isGooglePlayServicesAvailable()) {
@@ -252,25 +223,31 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         }
         mMap.setMyLocationEnabled(true);
         // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         // Create a criteria object to retrieve provider
         Criteria criteria = new Criteria();
         // Get the name of the best provider
         String bestProvider = locationManager.getBestProvider(criteria, true);
         // Get Current Location
         Location location = locationManager.getLastKnownLocation(bestProvider);
+        // Set up current location to focus
+
+
         if (location != null) {
-            onLocationChanged(location);
+            onMyLocationChange(location);
         }
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
     }
     @Override
     public void onLocationChanged(Location location) {
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
-        this.mCurrentPosition = new LatLng(latitude, longitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentPosition));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        // todo: need to improve this function (brief the functions)
+        Log.d(AppConfig.DEBUG_TAG,"Current location: " + location);
+
+    }
+
+    @Override
+    public void onMyLocationChange(Location location) {
+        this.focusToCurrentLocation(location);
     }
 
     @Override
@@ -302,6 +279,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                     .getExtendedMap();
             this.mMap.setInfoWindowAdapter(new CustomWindowAdapter(getLayoutInflater()));
             this.mMap.setOnMapLongClickListener(this);
+            this.mMap.setOnMyLocationChangeListener(this);
         }
     }
 
@@ -340,21 +318,21 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         }
     }
 
-    private boolean checkWifiIsSetAtSamePosition(){
-        //todo: this need to be solved
-        boolean check = true;
-        Circle circle = mMap.addCircle(new CircleOptions().center(this.mCurrentPosition).radius(0).strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
-        List<Marker> listMarker = mMap.getDisplayedMarkers();
-        for (Marker marker : listMarker){
-            check = circle.contains(marker.getPosition());
-            if(check){
-                Toast.makeText(getApplicationContext(), "Please stand away from current point at least 5 meters", Toast.LENGTH_LONG).show();
-                return false;
-            }
-        }
-       return true;
-    }
+//    private boolean checkWifiIsSetAtSamePosition(){
+//        //todo: this need to be solved
+//        boolean check = true;
+//        Circle circle = mMap.addCircle(new CircleOptions().center(this.mCurrentPosition).radius(0).strokeColor(Color.RED)
+//                .fillColor(Color.BLUE));
+//        List<Marker> listMarker = mMap.getDisplayedMarkers();
+//        for (Marker marker : listMarker){
+//            check = circle.contains(marker.getPosition());
+//            if(check){
+//                Toast.makeText(getApplicationContext(), "Please stand away from current point at least 5 meters", Toast.LENGTH_LONG).show();
+//                return false;
+//            }
+//        }
+//       return true;
+//    }
 
     private boolean isGooglePlayServicesAvailable() {
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -365,5 +343,29 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
             return false;
         }
     }
+
+    private static String getCurrentSsid(Context context) {
+        String ssid = null;
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (networkInfo.isConnected()) {
+            final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+            if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
+                ssid = connectionInfo.getSSID();
+            }
+        }
+        return ssid;
+    }
+
+    private void focusToCurrentLocation(Location location){
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        this.mCurrentPosition = new LatLng(latitude, longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(mCurrentPosition));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+    }
+
 
 }
