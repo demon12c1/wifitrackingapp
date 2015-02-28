@@ -52,7 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener, LocationListener, GoogleMap.OnMyLocationChangeListener {
+public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener,  GoogleMap.OnMyLocationChangeListener {
     private GoogleMap mMap;
     private LatLng mCurrentPosition;
     private LocationManager locationManager;
@@ -64,8 +64,6 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         setContentView(R.layout.activity_main);
         //Init map info
         Log.d(AppConfig.DEBUG_TAG,"Set up map");
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 400, 0, this); //You can also use LocationManager.GPS_PROVIDER and LocationManager.PASSIVE_PROVIDER
         setUpMap();
         setUpMapIfNeeded();
 
@@ -243,13 +241,6 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         if (location != null) {
             onMyLocationChange(location);
         }
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
-    }
-    @Override
-    public void onLocationChanged(Location location) {
-        // todo: need to improve this function (brief the functions)
-        Log.d(AppConfig.DEBUG_TAG,"Current location: " + location);
-
     }
 
     @Override
@@ -257,20 +248,6 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         this.focusToCurrentLocation(location);
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     private void addWifiMarker(Double lng, Double lat, String wifiName, String wifiPass, String description){
         if (this.mMap != null) {
