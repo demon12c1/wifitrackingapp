@@ -12,14 +12,14 @@
         android:paddingTop="20dp"
         android:text="ID:" />
 
-    <EditText
+    <TextView
         android:id="@+id/etTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/etSnippet"
         android:layout_alignBottom="@+id/tvTitle"
         android:layout_toRightOf="@+id/tvTitle" >
-    </EditText>
+    </TextView>
 
     <TextView
         android:id="@+id/tvSnippet"

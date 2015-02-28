@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidmapsextensions.Circle;
@@ -125,6 +126,12 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
 
         // Create alert dialog
         final AlertDialog alertDialog = alertDialogBuilder.create();
+        // get bssid of the wifi (the wifi name)
+        String bssid = MainActivity.this.getCurrentSsid(MainActivity.this);
+        Log.d(AppConfig.DEBUG_TAG,"BSSID: " + bssid);
+        // Extract content from alert dialog
+        TextView wifiBssid = ((TextView) messageView.findViewById(R.id.etTitle));
+        wifiBssid.setText(bssid);
 
         // Configure dialog button (OK)
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
@@ -135,26 +142,26 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                         // Define color of marker icon
                         BitmapDescriptor defaultMarker =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-                        // Extract content from alert dialog
-                        String wifiName = ((EditText) alertDialog.findViewById(R.id.etTitle)).
-                                getText().toString();
+
+                        String wifiName = ((TextView) alertDialog.findViewById(R.id.etTitle)).getText().toString();
                         String wifiPassword= ((EditText) alertDialog.findViewById(R.id.etSnippet)).
                                 getText().toString();
                         String description = ((EditText) alertDialog.findViewById(R.id.etDes)).
                                 getText().toString();
-                        String bssid = MainActivity.this.getCurrentSsid(MainActivity.this);
+
                         // Creates and adds marker to the map
 
 
                         DataPostAsyncTask dataPostAsyncTask = new DataPostAsyncTask();
                         if(!wifiName.isEmpty()){
+                            // transport the data to PostDataToCreateWifi in requestutil
                             HashMap<String, String> wifiInfo = new HashMap<String, String>();
                             wifiInfo.put("longtitude", String.valueOf(point.longitude));
                             wifiInfo.put("latitude", String.valueOf(point.latitude));
                             wifiInfo.put("wifiName", wifiName);
                             wifiInfo.put("wifiPassword", wifiPassword);
                             wifiInfo.put("description", description);
-                            wifiInfo.put("bssid", bssid);
+                            wifiInfo.put("bssid", wifiName);
                             try {
                                 String output = dataPostAsyncTask.execute((HashMap) wifiInfo).get();
                                 ipChecked = checkingWifiAlreadySet(output);

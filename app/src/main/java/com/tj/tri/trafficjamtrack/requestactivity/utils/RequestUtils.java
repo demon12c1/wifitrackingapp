@@ -106,6 +106,7 @@ public class RequestUtils {
             nameValuePairs.add(new BasicNameValuePair("longtitude", data.get("longtitude")));
             nameValuePairs.add(new BasicNameValuePair("latitude", data.get("latitude")));
             nameValuePairs.add(new BasicNameValuePair("wifiName", data.get("wifiName")));
+            nameValuePairs.add(new BasicNameValuePair("bssid", data.get("bssid")));
             nameValuePairs.add(new BasicNameValuePair("wifiPass", data.get("wifiPassword")));
             nameValuePairs.add(new BasicNameValuePair("description", data.get("description")));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
