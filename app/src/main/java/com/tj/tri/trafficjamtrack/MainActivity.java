@@ -95,6 +95,9 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_edit) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -106,14 +109,14 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
 //        if(checkWifiIsSetAtSamePosition()){
             LatLng latLng = this.mCurrentPosition;
             // Display the alert dialog and set up point if create successfully at current location
-            showAlertDialogForPoint(latLng);
+            showAlertDialogForCreatePoint(latLng);
 //        }
 
     }
 
 
     // Display the alert that adds the marker
-    private void showAlertDialogForPoint(final LatLng point) {
+    private void showAlertDialogForCreatePoint(final LatLng point) {
         // inflate message_item.xml view
         View messageView = LayoutInflater.from(MainActivity.this).
                 inflate(R.layout.message_item, null);

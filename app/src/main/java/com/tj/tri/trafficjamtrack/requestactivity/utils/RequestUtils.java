@@ -128,4 +128,40 @@ public class RequestUtils {
 
         return result;
     }
+
+    public static String PostDataToUpdateWifi(HashMap<String, String> data){
+        InputStream inputStream = null;
+        String result = "";
+        Log.d(AppConfig.DEBUG_TAG, "data to post: " + data);
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(AppConfig.URL_UPDATE_WIFI_DATA);
+            // make GET request to the given URL
+
+
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("API_KEY", AppConfig.API_KEY));
+            nameValuePairs.add(new BasicNameValuePair("bssid", data.get("bssid")));
+            nameValuePairs.add(new BasicNameValuePair("wifiPass", data.get("wifiPassword")));
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            Log.d(AppConfig.DEBUG_TAG, "http data: " + httpPost.toString());
+            HttpResponse httpResponse = httpclient.execute(httpPost);
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = Helper.convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+        return result;
+    }
 }
