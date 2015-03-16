@@ -50,6 +50,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLongClickListener,  GoogleMap.OnMyLocationChangeListener {
@@ -128,12 +129,13 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         // Create alert dialog
         final AlertDialog alertDialog = alertDialogBuilder.create();
         // get bssid of the wifi (the wifi name)
-        String bssid = MainActivity.this.getCurrentSsid(MainActivity.this);
-        Log.d(AppConfig.DEBUG_TAG,"BSSID: " + bssid);
+        HashMap routerParam = MainActivity.this.getCurrentRouterParam(MainActivity.this);
+        Log.d(AppConfig.DEBUG_TAG,"BSSID: " + routerParam.get("ssid"));
+        Log.d(AppConfig.DEBUG_TAG,"MAC: " + routerParam.get("mac"));
         // Extract content from alert dialog
         TextView wifiBssid = ((TextView) messageView.findViewById(R.id.etTitle));
-        wifiBssid.setText(bssid);
-
+        wifiBssid.setText(routerParam.get("ssid").toString());
+        wifiBssid.setTag(routerParam.get("mac"));
         // Configure dialog button (OK)
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
                 new DialogInterface.OnClickListener() {
@@ -143,8 +145,9 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                         // Define color of marker icon
                         BitmapDescriptor defaultMarker =
                                 BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
-
-                        String wifiName = ((TextView) alertDialog.findViewById(R.id.etTitle)).getText().toString();
+                        TextView title = ((TextView) alertDialog.findViewById(R.id.etTitle));
+                        String wifiName = title.getText().toString();
+                        String macAddr = title.getTag().toString();
                         String wifiPassword= ((EditText) alertDialog.findViewById(R.id.etSnippet)).
                                 getText().toString();
                         String description = ((EditText) alertDialog.findViewById(R.id.etDes)).
@@ -163,6 +166,7 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
                             wifiInfo.put("wifiPassword", wifiPassword);
                             wifiInfo.put("description", description);
                             wifiInfo.put("bssid", wifiName);
+                            wifiInfo.put("mac", macAddr);
                             try {
                                 String output = dataPostAsyncTask.execute((HashMap) wifiInfo).get();
                                 ipChecked = checkingWifiAlreadySet(output);
@@ -331,8 +335,10 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
         }
     }
 
-    private static String getCurrentSsid(Context context) {
+    private static HashMap<String, String> getCurrentRouterParam(Context context) {
         String ssid = null;
+        String mac = null;
+        HashMap<String, String> map = new HashMap<>();
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
         if (networkInfo.isConnected()) {
@@ -341,8 +347,14 @@ public class MainActivity extends ActionBarActivity implements GoogleMap.OnMapLo
             if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getSSID())) {
                 ssid = connectionInfo.getSSID();
             }
+            if (connectionInfo != null && !TextUtils.isEmpty(connectionInfo.getBSSID())) {
+                mac = connectionInfo.getBSSID();
+            }
+            map.put("ssid",ssid);
+            map.put("mac",mac);
+
         }
-        return ssid;
+        return map;
     }
 
     private void focusToCurrentLocation(Location location){

@@ -109,6 +109,7 @@ public class RequestUtils {
             nameValuePairs.add(new BasicNameValuePair("bssid", data.get("bssid")));
             nameValuePairs.add(new BasicNameValuePair("wifiPass", data.get("wifiPassword")));
             nameValuePairs.add(new BasicNameValuePair("description", data.get("description")));
+            nameValuePairs.add(new BasicNameValuePair("mac", data.get("mac")));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             Log.d(AppConfig.DEBUG_TAG, "http data: " + httpPost.toString());
             HttpResponse httpResponse = httpclient.execute(httpPost);
